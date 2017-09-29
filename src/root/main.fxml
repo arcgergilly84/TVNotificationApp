@@ -10,12 +10,13 @@
    <children>
       <ListView layoutX="75.0" layoutY="73.0" prefHeight="401.0" prefWidth="298.0" />
       <ListView fx:id="TVList" layoutX="436.0" layoutY="73.0" prefHeight="401.0" prefWidth="289.0" />
-      <Button fx:id="exitButton" layoutX="775.0" layoutY="14.0" mnemonicParsing="false" onAction="#exitApp" text="X" />
-      <Button fx:id="addTVShow" layoutX="88.0" layoutY="504.0" mnemonicParsing="false" onAction="#addtoList" text="Add to list" />
-      <TextField fx:id="tvName" layoutX="224.0" layoutY="504.0" promptText="TV Show" />
-      <TextField fx:id="tvDate" layoutX="436.0" layoutY="504.0" promptText="Date" />
+      <Button fx:id="exitButton" layoutX="753.0" layoutY="30.0" mnemonicParsing="false" onAction="#exitApp" text="X" />
+      <Button fx:id="addTVShow" layoutX="70.0" layoutY="504.0" mnemonicParsing="false" onAction="#addtoList" text="Add to list" />
+      <TextField fx:id="tvName" layoutX="178.0" layoutY="504.0" promptText="TV Show" />
+      <TextField fx:id="tvDate" layoutX="381.0" layoutY="504.0" promptText="Date DD/MM/YY" />
       <Label layoutX="159.0" layoutY="35.0" text="Showing Today" />
       <Label layoutX="549.0" layoutY="35.0" text="TV Shows" />
-      <Label fx:id="validate" layoutX="645.0" layoutY="509.0" />
+      <Label fx:id="validate" layoutX="581.0" layoutY="509.0" />
+      <Button layoutX="365.0" layoutY="30.0" mnemonicParsing="false" onAction="#loadData" text="Load Data" />
    </children>
 </AnchorPane>
