@@ -7,8 +7,8 @@ public class TV {
     private String name;
     private String date;
 
-    public TV(String name, String date){
-        showID += 1;
+    public TV(int ID, String name, String date){
+        showID = ID;
         this.name = name;
         this.date = date;
     }
