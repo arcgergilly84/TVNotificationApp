@@ -31,14 +31,13 @@ public class Controller {
     @FXML TextField code;
     @FXML TextField urlEpisode;
 
-
-    ObservableList<String> tvShows = FXCollections.observableArrayList();
-    ObservableList<String> currentShows = FXCollections.observableArrayList();
-    Map<Integer,ArrayList<String>> TVShows = new TreeMap<>();
-    SimpleDateFormat date = new SimpleDateFormat("dd MMM yy");
-    String today = date.format(new Date());
-    TV tv = null;
-    int showID = 1;
+    private ObservableList<String> tvShows = FXCollections.observableArrayList();
+    private ObservableList<String> currentShows = FXCollections.observableArrayList();
+    private TreeMap<Integer,ArrayList<String>> TVShows = new TreeMap<>();
+    private SimpleDateFormat date = new SimpleDateFormat("dd MMM yy");
+    private String today = date.format(new Date());
+    private TV tv = null;
+    private int showID = 1;
 
     public void addtoList(){
         String show = tvName.getText();
@@ -65,7 +64,6 @@ public class Controller {
         TVList.setItems(tvShows.sorted());
         showID += 1;
         clear();
-        System.out.println(TVShows);
     }
 
     public void exitApp(){
@@ -85,7 +83,10 @@ public class Controller {
     }
 
     private void persist() throws IOException{
-        try(FileOutputStream fos = new FileOutputStream("src/resources/files/tvlist.txt", true)){
+        String fileResource = "src/resources/files/tvlist.txt";
+        PrintWriter pw = new PrintWriter(fileResource);
+        pw.close();
+        try(FileOutputStream fos = new FileOutputStream(fileResource, true)){
             ObjectOutputStream oos = new ObjectOutputStream(fos);
             oos.writeObject(TVShows);
             oos.close();
@@ -108,13 +109,19 @@ public class Controller {
         for (Map.Entry<Integer,ArrayList<String>> shows : TVShows.entrySet()){
             tvShows.add(shows.getValue().get(0));
             TVList.setItems(tvShows);
-            dynamicEpisode(shows.getValue().get(3), shows.getValue().get(2));
+            String currentEpsiode = dynamicEpisode(shows.getValue().get(3), shows.getValue().get(2));
+            ArrayList<String> update = new ArrayList<>();
+            update.add(shows.getValue().get(0));
+            update.add(currentEpsiode);
+            update.add(shows.getValue().get(2));
+            update.add(shows.getValue().get(3));
+            TVShows.put(shows.getKey(),update);
         }
 
         showCurrent();
     }
 
-    public void dynamicEpisode(String epurl, String sCode)throws IOException{
+    private String dynamicEpisode(String epurl, String sCode)throws IOException{
         URL url = new URL("http://epguides.com/" + epurl);
         URLConnection uc = url.openConnection();
         InputStream is = uc.getInputStream();
@@ -124,21 +131,22 @@ public class Controller {
 
         while ((line = br.readLine()) != null){
             if (line.contains(sCode)){
-                line = line.substring(27, 36);
-                System.out.println(line);
+                if(line.substring(0,10).contains(sCode)) {
+                    line = line.substring(27, 36);
+                    return line;
+                }
+                //Add date dynamically
             }
         }
         is.close();
         br.close();
+        return line;
     }
 
-    public void showCurrent(){
+    private void showCurrent(){
         for(Map.Entry<Integer,ArrayList<String>> shows : TVShows.entrySet()){
-
-
             if(shows.getValue().get(1).equals(today)){
                 currentShows.add(shows.getValue().get(0));
-                System.out.println(shows.getValue().get(0));
                 currentview.setItems(currentShows.sorted());
             }
 
@@ -146,5 +154,6 @@ public class Controller {
 
     }
 
+    //TODO add code to show current details of selected tv show.
 
 }
