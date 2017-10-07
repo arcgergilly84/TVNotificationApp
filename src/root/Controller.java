@@ -57,6 +57,7 @@ public class Controller {
 
         if(show.equals("")|| userDate.equals("")){
             validate.setText("Not null");
+            showID -= 1;
         } else  {
             TVShows.put(tv.getID(),list);
             tvShows.add(tv.getname());
@@ -92,6 +93,7 @@ public class Controller {
             oos.close();
             fos.close();
         }
+        System.out.println(TVShows);
     }
 
     public void loadData() throws IOException{
@@ -113,11 +115,14 @@ public class Controller {
             ArrayList<String> update = new ArrayList<>();
             update.add(shows.getValue().get(0));
             update.add(currentEpsiode);
-            update.add(shows.getValue().get(2));
+            int code = Integer.parseInt(shows.getValue().get(2));
+            code += 1;
+            String updateCode = Integer.toString(code);
+            update.add(updateCode);
             update.add(shows.getValue().get(3));
             TVShows.put(shows.getKey(),update);
         }
-
+        System.out.println(TVShows);
         showCurrent();
     }
 
@@ -154,6 +159,8 @@ public class Controller {
 
     }
 
-    //TODO add code to show current details of selected tv show.
+
+    //TODO add code to show current details of selected tv show...add 1 to each base number after checking current and
+    // todays date.
 
 }
